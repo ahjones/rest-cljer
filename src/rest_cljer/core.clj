@@ -82,10 +82,11 @@
   (when m
     (.after r m TimeUnit/MILLISECONDS)))
 
-(defn add-absent-headers [r headers]
+(defn add-absent-headers
   "Add headers that shouldn't be present. The original approach was to add them as a map. However,
    the value of each header is irrelevant and, so, a second approach of specifying just the names
    of the headers as a vector has been added. The first apprach is retained for back compatibility."
+  [r headers]
   (if (map? headers)
     (doseq [h headers]
       (add-absent-header! r (first h)))
@@ -103,10 +104,11 @@
 (defn binary? [b]
   (or (instance? InputStream b) (instance? (type (byte-array [])) b)))
 
-(defn create-response [b t]
+(defn create-response
   "Create a rest-driver response with body b (optional) and content-type
   t (optional) by dispatching to the correct method based on the
   presence and type of b and t."
+  [b t]
   (cond (and b (binary? b)) (RestClientDriver/giveResponseAsBytes (input-stream b) t)
         (and b t) (RestClientDriver/giveResponse b t)
         b (RestClientDriver/giveResponse b)
